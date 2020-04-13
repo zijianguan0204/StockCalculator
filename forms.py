@@ -29,6 +29,6 @@ class CalculateForm(FlaskForm):
     final_share_price = IntegerField('Final Share Price', validators=[DataRequired()])
     sell_commission = IntegerField('Sell Commission', validators=[DataRequired()])
     initial_share_price = IntegerField('Initial Share Price', validators=[DataRequired()])
-    buy_commission = IntegerField('Final Share Price', validators=[DataRequired()])
+    buy_commission = IntegerField('Buy Commission', validators=[DataRequired()])
     tax = FloatField('Tax', validators=[DataRequired()])
     submit = SubmitField('Calculate')

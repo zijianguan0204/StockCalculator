@@ -5,8 +5,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
 
 
-@app.route("/")
-@app.route("/home")
+@app.route("/", methods=['GET', 'POST'])
 def home():
     proceeds = 0
     cost = 0
@@ -24,11 +23,10 @@ def home():
         tax = form.tax.data
 
         proceeds = allotment * final_sell_price
-        cost = allotment * initial_sell_price + buy_commission + sell_commission + tax * proceeds
+        cost = (proceeds - allotment * initial_sell_price - buy_commission - sell_commission) * tax + allotment * initial_sell_price + buy_commission + sell_commission
         net_profit = proceeds - cost
         return_on_inv = net_profit / cost
-        break_piece = net_profit / allotment
-        print(tax)
+        break_piece = (allotment * initial_sell_price + buy_commission + sell_commission) / allotment
     else:
         flash('calculator failed')
     return render_template('calculator.html', title='Calculator', form=form, proceeds=proceeds, cost=cost,
