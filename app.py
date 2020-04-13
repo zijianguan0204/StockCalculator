@@ -54,6 +54,11 @@ def login():
 
 @app.route("/calculate", methods=['GET', 'POST'])
 def calculate():
+    proceeds = 0
+    cost = 0
+    net_profit = 0
+    return_on_inv = 0
+    break_piece = 0
     form = CalculateForm()
     if form.validate_on_submit():
         symbol = form.symbol.data
