@@ -1,0 +1,111 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="content-section">
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Stock Calculator</legend>
+                <div class="form-group">
+                    {{ form.symbol.label(class="form-control-label") }}
+
+                    {% if form.symbol.errors %}
+                        {{ form.symbol(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.symbol.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.symbol(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.allotment.label(class="form-control-label") }}
+                    {% if form.allotment.errors %}
+                        {{ form.allotment(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.allotment.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.allotment(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.final_share_price.label(class="form-control-label") }}
+                    {% if form.final_share_price.errors %}
+                        {{ form.final_share_price(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.final_share_price.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.final_share_price(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.sell_commission.label(class="form-control-label") }}
+                    {% if form.sell_commission.errors %}
+                        {{ form.sell_commission(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.sell_commission.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.sell_commission(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.initial_share_price.label(class="form-control-label") }}
+                    {% if form.initial_share_price.errors %}
+                        {{ form.initial_share_price(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.initial_share_price.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.initial_share_price(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.buy_commission.label(class="form-control-label") }}
+                    {% if form.buy_commission.errors %}
+                        {{ form.buy_commission(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.buy_commission.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.buy_commission(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.tax.label(class="form-control-label") }}
+                    {% if form.tax.errors %}
+                        {{ form.tax(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.tax.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.tax(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+            </fieldset>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+            <p>The proceeds is  {{ proceeds }}</p>
+            <p>The cost is  {{ cost }}</p>
+            <p>The net_profit is  {{ net_profit }}</p>
+            <p>The return_on_inv is  {{ return_on_inv }}</p>
+            <p>The break_piece is  {{ break_piece }}</p>
+        </form>
+    </div>
+{% endblock content %}
