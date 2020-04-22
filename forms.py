@@ -2,26 +2,6 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, IntegerField, FloatField
 from wtforms.validators import DataRequired, Length, Email, EqualTo
 
-
-class RegistrationForm(FlaskForm):
-    username = StringField('Username',
-                           validators=[DataRequired(), Length(min=2, max=20)])
-    email = StringField('Email',
-                        validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    confirm_password = PasswordField('Confirm Password',
-                                     validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField('Sign Up')
-
-
-class LoginForm(FlaskForm):
-    email = StringField('Email',
-                        validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    remember = BooleanField('Remember Me')
-    submit = SubmitField('Login')
-
-
 class CalculateForm(FlaskForm):
     symbol = StringField('Stock Symbol',
                          validators=[DataRequired()])
@@ -31,4 +11,9 @@ class CalculateForm(FlaskForm):
     initial_share_price = IntegerField('Initial Share Price', validators=[DataRequired()])
     buy_commission = IntegerField('Buy Commission', validators=[DataRequired()])
     tax = FloatField('Tax', validators=[DataRequired()])
+    submit = SubmitField('Calculate')
+
+class realTimeInfoForm(FlaskForm):
+    symbol = StringField('Stock Symbol',
+                         validators=[DataRequired()])
     submit = SubmitField('Calculate')

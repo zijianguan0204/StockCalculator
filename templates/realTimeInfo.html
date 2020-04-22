@@ -1,0 +1,30 @@
+{% block content %}
+    <div class="content-section">
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Stock Calculator</legend>
+                <div class="form-group">
+                    {{ form.symbol.label(class="form-control-label") }}
+
+                    {% if form.symbol.errors %}
+                        {{ form.symbol(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.symbol.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.symbol(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+            </fieldset>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+            <p>{{ company_name }}</p>
+            <p>{{ date_time }}</p>
+            <p>{{ output }}</p>
+        </form>
+    </div>
+{% endblock content %}
