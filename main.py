@@ -1,5 +1,5 @@
 from flask import Flask, render_template, flash
-from forms import CalculateForm, realTimeInfoForm
+from forms import CalculateForm, realTimeInfoForm, invsForm
 from alpha_vantage.timeseries import TimeSeries
 import datetime
 import yfinance as yf
@@ -75,6 +75,25 @@ def realTimeInfo():
     else:
         flash('Getting real info failed')
     return render_template('realTimeInfo.html', title='realTimeInfo', form=form, symbol=symbol, date_time=date_time, output=output, company_name = company_name)
+
+
+#This is the function we should work on
+@app.route("/invs", methods=['GET', 'POST'])
+def invs():
+    input_amount = 0
+    invs_method = ''
+    result = ""
+    form = invsForm()
+    if form.validate_on_submit():
+        input_amount = form.input_amount.data
+        invs_method = form.invs_method.data
+        
+        #calculations and algorithm down here.............
+        result = "Here is the result..."
+
+    else:
+        flash('calculator failed')
+    return render_template('invs.html', title='Invs', form=form, result=result)
 
 
 if __name__ == '__main__':
