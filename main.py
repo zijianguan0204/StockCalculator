@@ -87,9 +87,21 @@ def invs():
     if form.validate_on_submit():
         input_amount = form.input_amount.data
         invs_method = form.invs_method.data
-        
+        print(invs_method)
+        if (invs_method == "Ethical Investing"):
+            result = "Vanguard Total Stock Market ETF (VTI)\n Adobe (ADBE) \nNestle (NSRGY)"
+        elif (invs_method == 'Growth Investing'):
+            result = "iShares Core MSCI Total Intl Stk (IXUS)\n Adobe (ADBE) \nNestle (NSRGY)"
+        elif (invs_method == "Index Investing"):
+            result = "iShares Core 10+ Year USD Bond (ILTB)\n Adobe (ADBE) \nNestle (NSRGY)"
+        elif (invs_method == "Quality Investing"):
+            result = "Apple (APPL)\n Adobe (ADBE) \nNestle (NSRGY)"    
+        elif (invs_method == "Value Investing"):
+            result = "Apple (APPL)\n Adobe (ADBE) \nNestle (NSRGY)"
+        else:
+            result = "Plese enter a valit strategy method"
         #calculations and algorithm down here.............
-        result = "Here is the result..."
+        #result = "Here is the result..."
 
     else:
         flash('calculator failed')
