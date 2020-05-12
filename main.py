@@ -3,6 +3,7 @@ from forms import CalculateForm, realTimeInfoForm, invsForm
 from alpha_vantage.timeseries import TimeSeries
 import datetime
 import yfinance as yf
+import requests
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
@@ -87,19 +88,21 @@ def invs():
     if form.validate_on_submit():
         input_amount = form.input_amount.data
         invs_method = form.invs_method.data
-        print(invs_method)
         if (invs_method == "Ethical Investing"):
-            result = "Vanguard Total Stock Market ETF (VTI)\n Adobe (ADBE) \nNestle (NSRGY)"
+            result = getApiResult("IBM")
         elif (invs_method == 'Growth Investing'):
-            result = "iShares Core MSCI Total Intl Stk (IXUS)\n Adobe (ADBE) \nNestle (NSRGY)"
+            result = "You can chose iShares Core MSCI Total Intl Stk (IXUS)\n Adobe (ADBE) \nNestle (NSRGY)"
         elif (invs_method == "Index Investing"):
-            result = "iShares Core 10+ Year USD Bond (ILTB)\n Adobe (ADBE) \nNestle (NSRGY)"
+            result = "You can chose Fidelity ZERO Large Cap Index(FNILX)\n Vanguard S&P 500 ETF(VOO) \n SPDR S&P 500 ETF Trust(SPY)"
         elif (invs_method == "Quality Investing"):
-            result = "Apple (APPL)\n Adobe (ADBE) \nNestle (NSRGY)"    
+            result = "You can spend " +str(0.3* input_amount) + " on Apple (APPL) and " +str(0.5* input_amount)+ "on Amazon (AMZN) and " +str(0.1* input_amount) + "on Zoom (ZM)"
+            result += "The current value is "
+            result += "The weekly trend of the portfolio value"
         elif (invs_method == "Value Investing"):
-            result = "Apple (APPL)\n Adobe (ADBE) \nNestle (NSRGY)"
+            result = "You can chose Apple (APPL)\n Adobe (ADBE) \nNestle (NSRGY)"
         else:
-            result = "Plese enter a valit strategy method"
+            result = "Plese enter a valid strategy method"
+
         #calculations and algorithm down here.............
         #result = "Here is the result..."
 
@@ -107,6 +110,17 @@ def invs():
         flash('calculator failed')
     return render_template('invs.html', title='Invs', form=form, result=result)
 
-
+def getApiResult(symbol):
+    url = "https://www.alphavantage.co/query"
+    #Taylor's
+    #apikey = "AQBRXZ79TA0OFHR3"
+    #Zijian's
+    apikey = "7NQ5H1FQHLLH7JFC"
+    function = "TIME_SERIES_DAILY"
+    params = {'function': function, 'symbol':symbol, 'apikey': apikey}
+    r = requests.request('GET', url, params=params).json()
+    data = r["Time Series (Daily)"]["2020-05-11"]
+    return data
+        
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=8080, debug=True)
