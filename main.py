@@ -89,9 +89,10 @@ def invs():
         input_amount = form.input_amount.data
         invs_method = form.invs_method.data
         if (invs_method == "Ethical Investing"):
+            result = "You can chose Tesla (TSLA)\n Sunrun (RUN) \n General Electric (GE)"
             result = getApiResult("IBM")
         elif (invs_method == 'Growth Investing'):
-            result = "You can chose iShares Core MSCI Total Intl Stk (IXUS)\n Adobe (ADBE) \nNestle (NSRGY)"
+            result = "You can chose Amazon (AMZN)\n Veera System (VEEV) \n Shopify (SHOP)"
         elif (invs_method == "Index Investing"):
             result = "You can chose Fidelity ZERO Large Cap Index(FNILX)\n Vanguard S&P 500 ETF(VOO) \n SPDR S&P 500 ETF Trust(SPY)"
         elif (invs_method == "Quality Investing"):
@@ -121,6 +122,6 @@ def getApiResult(symbol):
     r = requests.request('GET', url, params=params).json()
     data = r["Time Series (Daily)"]["2020-05-11"]
     return data
-        
+
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=8080, debug=True)
