@@ -91,11 +91,13 @@ def invs():
         invs_method = form.invs_method.data
         if (invs_method == "Ethical Investing"):
             result = "You can chose Tesla (TSLA)\n Sunrun (RUN) \n General Electric (GE)"
-            list1 = getApiResult("TSLA")
-            list2 = getApiResult("GE")
-            valueList = profileValue(100, list1, list2)
-            result += ', '.join(list1)   #turn a list of string to a string
-            result += ', '.join(list2)    
+            tsla = getApiResult("TSLA")
+            run = getApiResult("RUN")
+            ge = getApiResult("GE")
+            valueList = profileValue(100, tsla, run, ge, 30, 40, 30)
+            result += ', '.join(tsla)+" "     #turn a list of string to a string
+            result += ', '.join(run) +" "    
+            result += ', '.join(ge)  +" "    
             result += ', '.join(map(str, valueList))  #turn a list of int to string
         elif (invs_method == 'Growth Investing'):
             result = "You can chose Amazon (AMZN)\n Veera System (VEEV) \n Shopify (SHOP)"
@@ -139,14 +141,15 @@ def getMostRecentBusinessDay(today):
     most_recent = today - timedelta(offset)
     return most_recent
 
-def profileValue(money, list1, list2):
-    portion1 = 0.4 * money
-    portion2 = 0.6 * money
+def profileValue(money, list1, list2, list3, p1, p2, p3):
+    portion1 = p1 * money * 0.01
+    portion2 = p2 * money * 0.01
+    portion3 = p3 * money * 0.01
     result = []
     result.append(money)
     for i in range(1, len(list1)):
-        value = portion1 * float(list1[i]) / float(list1[0]) + portion2 * float(list2[i]) / float(list2[0])
-        result.append(value)
+        value = portion1 * float(list1[i]) / float(list1[0]) + portion2 * float(list2[i]) / float(list2[0])+ portion3 * float(list3[i]) / float(list3[0])
+        result.append(round(value,2))
     return result
 
 if __name__ == '__main__':
