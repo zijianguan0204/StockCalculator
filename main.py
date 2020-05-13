@@ -102,7 +102,7 @@ def invs():
         elif (invs_method == 'Growth Investing'):
             result = "You can chose Amazon (AMZN)\n Veera System (VEEV) \n Shopify (SHOP)"
         elif (invs_method == "Index Investing"):
-            result = "You can chose Fidelity ZERO Large Cap Index(FNILX)\n Vanguard S&P 500 ETF(VOO) \n SPDR S&P 500 ETF Trust(SPY)"
+            result = "You can chose iShares Core S&P 500 ETF (IVV)\n Vanguard S&P 500 ETF(VOO) \n SPDR S&P 500 ETF Trust(SPY)"
         elif (invs_method == "Quality Investing"):
             result = "You can spend " +str(0.3* input_amount) + " on Apple (APPL) and " +str(0.5* input_amount)+ "on Amazon (AMZN) and " +str(0.1* input_amount) + "on Zoom (ZM)"
             result += "The current value is "
