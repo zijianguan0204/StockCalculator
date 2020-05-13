@@ -123,7 +123,7 @@ def invs():
         elif (invs_method == "Quality Investing"):
             companyList = company["Quality"]
             portionList= portion["Quality"]
-            appl = getJsonResult("APPL")
+            appl = getJsonResult("AAPL")
             amzn = getJsonResult("AMZN")
             zm = getJsonResult("ZM")
             valueList = profileValue(100, appl, amzn, zm, portionList)
@@ -150,10 +150,10 @@ def getJsonResult(symbol):
     json_url = os.path.join(SITE_ROOT, symbol+".json")
     r = json.load(open(json_url))
     data=[]
-    dt = date.today()
-    dt = getMostRecentBusinessDay(dt)
-#     date_time_str = '2020-05-12'
-#     dt = datetime.datetime.strptime(date_time_str, '%Y-%m-%d')
+    #dt = date.today()
+    date_time_str = '2020-05-13'   #write todays date
+    date_time_obj = datetime.datetime.strptime(date_time_str, '%Y-%m-%d')
+    dt = date_time_obj.date()
     for i in range(5):
         dt = getMostRecentBusinessDay(dt)
         data.append( r["Time Series (Daily)"][str(dt)]["4. close"] )
