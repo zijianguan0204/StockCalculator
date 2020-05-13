@@ -86,7 +86,7 @@ def realTimeInfo():
 def invs():
     companyList = []
     portionList = []
-    valuelist = []
+    valueList = []
     resultDict = {1:"haha",2:"xixi"}
     company = {"Ethical":["Tesla (TSLA)","Sunrun (RUN)","General Electric (GE)"],"Growth":["Amazon (AMZN)","Veera System (VEEV)","Shopify (SHOP)"],"Quality":
                ["Apple (APPL)","Amazon (AMZN)","Zoom (ZM)"],"Index":["iShares Core S&P 500 ETF (IVV)","Vanguard S&P 500 ETF(VOO)","SPDR S&P 500 ETF Trust(SPY)"],"Value":["Google (GOOG)","Netflix (NFLX)","NVIDIA(NVDA)"]}
@@ -151,6 +151,9 @@ def getJsonResult(symbol):
     r = json.load(open(json_url))
     data=[]
     dt = date.today()
+    dt = getMostRecentBusinessDay(dt)
+#     date_time_str = '2020-05-12'
+#     dt = datetime.datetime.strptime(date_time_str, '%Y-%m-%d')
     for i in range(5):
         dt = getMostRecentBusinessDay(dt)
         data.append( r["Time Series (Daily)"][str(dt)]["4. close"] )
