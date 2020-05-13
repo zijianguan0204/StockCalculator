@@ -1,10 +1,12 @@
-from flask import Flask, render_template, flash
+from flask import Flask, render_template, flash,url_for
 from forms import CalculateForm, realTimeInfoForm, invsForm
 from alpha_vantage.timeseries import TimeSeries
 import datetime
 import yfinance as yf
 import requests
 from datetime import date, timedelta
+import os
+import json
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
@@ -82,6 +84,14 @@ def realTimeInfo():
 #This is the function we should work on
 @app.route("/invs", methods=['GET', 'POST'])
 def invs():
+    companyList = []
+    portionList = []
+    valuelist = []
+    resultDict = {1:"haha",2:"xixi"}
+    company = {"Ethical":["Tesla (TSLA)","Sunrun (RUN)","General Electric (GE)"],"Growth":["Amazon (AMZN)","Veera System (VEEV)","Shopify (SHOP)"],"Quality":
+               ["Apple (APPL)","Amazon (AMZN)","Zoom (ZM)"],"Index":["iShares Core S&P 500 ETF (IVV)","Vanguard S&P 500 ETF(VOO)","SPDR S&P 500 ETF Trust(SPY)"],"Value":["Google (GOOG)","Netflix (NFLX)","NVIDIA(NVDA)"]}
+    portion = {"Ethical":[30,40,30],"Growth":[30,40,30],"Quality":
+               [30,40,30],"Index":[60,30,10],"Value":[60,30,10]}
     input_amount = 0
     invs_method = ''
     result = ""
@@ -90,25 +100,40 @@ def invs():
         input_amount = form.input_amount.data
         invs_method = form.invs_method.data
         if (invs_method == "Ethical Investing"):
-            result = "You can chose Tesla (TSLA)\n Sunrun (RUN) \n General Electric (GE)"
-            tsla = getApiResult("TSLA")
-            run = getApiResult("RUN")
-            ge = getApiResult("GE")
-            valueList = profileValue(100, tsla, run, ge, 30, 40, 30)
-            result += ', '.join(tsla)+" "     #turn a list of string to a string
-            result += ', '.join(run) +" "    
-            result += ', '.join(ge)  +" "    
-            result += ', '.join(map(str, valueList))  #turn a list of int to string
+            companyList = company["Ethical"]
+            portionList= portion["Ethical"]
+            tsla = getJsonResult("TSLA")
+            run = getJsonResult("RUN")
+            ge = getJsonResult("GE")
+            valueList = profileValue(100, tsla, run, ge, portionList)
         elif (invs_method == 'Growth Investing'):
-            result = "You can chose Amazon (AMZN)\n Veera System (VEEV) \n Shopify (SHOP)"
+            companyList = company["Growth"]
+            portionList= portion["Growth"]
+            amzn = getJsonResult("AMZN")
+            veev = getJsonResult("VEEV")
+            shop = getJsonResult("SHOP")
+            valueList = profileValue(100, amzn, veev, shop, portionList) 
         elif (invs_method == "Index Investing"):
-            result = "You can chose iShares Core S&P 500 ETF (IVV)\n Vanguard S&P 500 ETF(VOO) \n SPDR S&P 500 ETF Trust(SPY)"
+            companyList = company["Index"]
+            portionList= portion["Index"]
+            amzn = getJsonResult("AMZN")
+            veev = getJsonResult("VEEV")
+            shop = getJsonResult("SHOP")
+            valueList = profileValue(100, amzn, veev, shop, portionList)
         elif (invs_method == "Quality Investing"):
-            result = "You can spend " +str(0.3* input_amount) + " on Apple (APPL) and " +str(0.5* input_amount)+ "on Amazon (AMZN) and " +str(0.1* input_amount) + "on Zoom (ZM)"
-            result += "The current value is "
-            result += "The weekly trend of the portfolio value"
+            companyList = company["Quality"]
+            portionList= portion["Quality"]
+            appl = getJsonResult("APPL")
+            amzn = getJsonResult("AMZN")
+            zm = getJsonResult("ZM")
+            valueList = profileValue(100, appl, amzn, zm, portionList)
         elif (invs_method == "Value Investing"):
-            result = "You can chose Apple (APPL)\n Adobe (ADBE) \nNestle (NSRGY)"
+            companyList = company["Value"]
+            portionList= portion["Value"]
+            goog = getJsonResult("GOOG")
+            nflx = getJsonResult("NFLX")
+            nvda = getJsonResult("NVDA")
+            valueList = profileValue(100, goog, nflx, nvda, portionList)
         else:
             result = "Plese enter a valid strategy method"
 
@@ -117,7 +142,19 @@ def invs():
 
     else:
         flash('calculator failed')
-    return render_template('invs.html', title='Invs', form=form, result=result)
+    return render_template('invs.html', title='Invs', form=form, result=result,
+                           resultDict = resultDict,companyList=companyList,portionList=portionList,valueList = valueList)
+
+def getJsonResult(symbol):
+    SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+    json_url = os.path.join(SITE_ROOT, symbol+".json")
+    r = json.load(open(json_url))
+    data=[]
+    dt = date.today()
+    for i in range(5):
+        dt = getMostRecentBusinessDay(dt)
+        data.append( r["Time Series (Daily)"][str(dt)]["4. close"] )
+    return list(reversed(data))
 
 def getApiResult(symbol):
     url = "https://www.alphavantage.co/query"
@@ -141,10 +178,10 @@ def getMostRecentBusinessDay(today):
     most_recent = today - timedelta(offset)
     return most_recent
 
-def profileValue(money, list1, list2, list3, p1, p2, p3):
-    portion1 = p1 * money * 0.01
-    portion2 = p2 * money * 0.01
-    portion3 = p3 * money * 0.01
+def profileValue(money, list1, list2, list3, portionList):
+    portion1 = portionList[0] * money * 0.01
+    portion2 = portionList[1] * money * 0.01
+    portion3 = portionList[2] * money * 0.01
     result = []
     result.append(money)
     for i in range(1, len(list1)):

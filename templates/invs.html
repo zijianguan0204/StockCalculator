@@ -34,7 +34,20 @@
             <div class="form-group">
                 {{ form.submit(class="btn btn-outline-info") }}
             </div>
-            <p>The result is  {{ result }}</p>
+            <p>Your final Protfolio based on your selected strategy is as below  {{ result }}</p >
+            <ol>
+              <li>{{ companyList[0] }} =  {{portionList[0]}} %</li>
+              <li>{{ companyList[1] }} =  {{portionList[1]}} %</li>
+              <li>{{ companyList[2] }} =  {{portionList[2]}} %</li>
+            </ol>
+            <p>A weekly trend of the portfolio value is as below </p >
+            <ul>
+              <li>{{valueList[0]}}</li>
+              <li>{{valueList[1]}}</li>
+              <li>{{valueList[2]}}</li>
+              <li>{{valueList[3]}}</li>
+              <li>{{valueList[4]}}</li>
+            </ul>
         </form>
     </div>
 {% endblock content %}
