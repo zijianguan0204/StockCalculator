@@ -4,6 +4,7 @@ from alpha_vantage.timeseries import TimeSeries
 import datetime
 import yfinance as yf
 import requests
+from datetime import date, timedelta
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
@@ -90,7 +91,12 @@ def invs():
         invs_method = form.invs_method.data
         if (invs_method == "Ethical Investing"):
             result = "You can chose Tesla (TSLA)\n Sunrun (RUN) \n General Electric (GE)"
-            result = getApiResult("IBM")
+            list1 = getApiResult("TSLA")
+            list2 = getApiResult("GE")
+            valueList = profileValue(100, list1, list2)
+            result += ', '.join(list1)   #turn a list of string to a string
+            result += ', '.join(list2)    
+            result += ', '.join(map(str, valueList))  #turn a list of int to string
         elif (invs_method == 'Growth Investing'):
             result = "You can chose Amazon (AMZN)\n Veera System (VEEV) \n Shopify (SHOP)"
         elif (invs_method == "Index Investing"):
@@ -120,8 +126,28 @@ def getApiResult(symbol):
     function = "TIME_SERIES_DAILY"
     params = {'function': function, 'symbol':symbol, 'apikey': apikey}
     r = requests.request('GET', url, params=params).json()
-    data = r["Time Series (Daily)"]["2020-05-11"]
-    return data
+    
+    data=[]
+    dt = date.today()
+    for i in range(5):
+        dt = getMostRecentBusinessDay(dt)
+        data.append( r["Time Series (Daily)"][str(dt)]["4. close"] )
+    return list(reversed(data))
+
+def getMostRecentBusinessDay(today):
+    offset = max(1, (today.weekday() + 6) % 7 - 3)
+    most_recent = today - timedelta(offset)
+    return most_recent
+
+def profileValue(money, list1, list2):
+    portion1 = 0.4 * money
+    portion2 = 0.6 * money
+    result = []
+    result.append(money)
+    for i in range(1, len(list1)):
+        value = portion1 * float(list1[i]) / float(list1[0]) + portion2 * float(list2[i]) / float(list2[0])
+        result.append(value)
+    return result
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=8080, debug=True)
