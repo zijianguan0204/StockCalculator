@@ -105,35 +105,35 @@ def invs():
             tsla = getJsonResult("TSLA")
             run = getJsonResult("RUN")
             ge = getJsonResult("GE")
-            valueList = profileValue(100, tsla, run, ge, portionList)
+            valueList = profileValue(input_amount, tsla, run, ge, portionList)
         elif (invs_method == 'Growth Investing'):
             companyList = company["Growth"]
             portionList= portion["Growth"]
             amzn = getJsonResult("AMZN")
             veev = getJsonResult("VEEV")
             shop = getJsonResult("SHOP")
-            valueList = profileValue(100, amzn, veev, shop, portionList) 
+            valueList = profileValue(input_amount, amzn, veev, shop, portionList) 
         elif (invs_method == "Index Investing"):
             companyList = company["Index"]
             portionList= portion["Index"]
             amzn = getJsonResult("AMZN")
             veev = getJsonResult("VEEV")
             shop = getJsonResult("SHOP")
-            valueList = profileValue(100, amzn, veev, shop, portionList)
+            valueList = profileValue(input_amount, amzn, veev, shop, portionList)
         elif (invs_method == "Quality Investing"):
             companyList = company["Quality"]
             portionList= portion["Quality"]
             appl = getJsonResult("AAPL")
             amzn = getJsonResult("AMZN")
             zm = getJsonResult("ZM")
-            valueList = profileValue(100, appl, amzn, zm, portionList)
+            valueList = profileValue(input_amount, appl, amzn, zm, portionList)
         elif (invs_method == "Value Investing"):
             companyList = company["Value"]
             portionList= portion["Value"]
             goog = getJsonResult("GOOG")
             nflx = getJsonResult("NFLX")
             nvda = getJsonResult("NVDA")
-            valueList = profileValue(100, goog, nflx, nvda, portionList)
+            valueList = profileValue(input_amount, goog, nflx, nvda, portionList)
         else:
             result = "Plese enter a valid strategy method"
 
