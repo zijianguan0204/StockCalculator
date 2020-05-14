@@ -123,7 +123,7 @@ def invs():
         elif (invs_method == "Quality Investing"):
             companyList = company["Quality"]
             portionList= portion["Quality"]
-            appl = getJsonResult("AAPL")
+            appl = getJsonResult("APPL")
             amzn = getJsonResult("AMZN")
             zm = getJsonResult("ZM")
             valueList = profileValue(100, appl, amzn, zm, portionList)
