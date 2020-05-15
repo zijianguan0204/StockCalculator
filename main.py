@@ -99,6 +99,9 @@ def invs():
     if form.validate_on_submit():
         input_amount = form.input_amount.data
         invs_method = form.invs_method.data
+        invs_method_opt = form.invs_method_opt.data
+        
+
         if (invs_method == "Ethical Investing"):
             companyList = company["Ethical"]
             portionList= portion["Ethical"]

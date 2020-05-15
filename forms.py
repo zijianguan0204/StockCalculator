@@ -23,4 +23,5 @@ class invsForm(FlaskForm):
     # invs_choices = [("Ethical Investing"), ("Growth Investing"), ("Index Investing"), ("Quality Investing"),("Value Investing")]
     # invs_method = SelectField(u'Investing Strategy', invs_choices)
     invs_method = StringField('Investing Strategy', validators=[DataRequired()])
+    invs_method_opt = StringField('Second Investing Strategy')
     submit = SubmitField('Submit')
