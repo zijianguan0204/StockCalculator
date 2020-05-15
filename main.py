@@ -7,6 +7,7 @@ import requests
 from datetime import date, timedelta
 import os
 import json
+import matplotlib.pyplot as plt
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
@@ -139,6 +140,14 @@ def invs():
             valueList = profileValue(input_amount, goog, nflx, nvda, portionList)
         else:
             result = "Plese enter a valid strategy method"
+
+        days = [1,2,3,4,5]
+        plt.plot(days, valueList)
+        plt.xlabel('days')
+        plt.ylabel('Prices')
+        plt.title('Price vs. Days')
+        plt.savefig('templates/graph.png')
+
 
         #calculations and algorithm down here.............
         #result = "Here is the result..."
