@@ -82,34 +82,66 @@ def realTimeInfo():
     return render_template('realTimeInfo.html', title='realTimeInfo', form=form, symbol=symbol, date_time=date_time, output=output, company_name = company_name)
 
 
+def checkSecondmethod(method):
+    if (method == "Ethical Investing" or method == 'Growth Investing' or  method == "Index Investing" or method == "Value Investing"):
+        return True
+    else:
+        return False
+
+
+def getValueList(invs_method,input_amount,portion,company,symbolList):
+    m = invs_method.split()[0]
+    companyList = company[m]
+    portionList= portion[m]
+    symol_1 = getJsonResult(symbolList[m][0])
+    symol_2 = getJsonResult(symbolList[m][1])
+    symol_3 = getJsonResult(symbolList[m][2])
+    valueList = profileValue(input_amount,symol_1, symol_2, symol_3, portionList)
+    return valueList, companyList, portionList
+    
+    
+
 #This is the function we should work on
 @app.route("/invs", methods=['GET', 'POST'])
 def invs():
     companyList = []
     portionList = []
+    companyList2 = []
+    portionList2 = []
     valueList = []
-    resultDict = {1:"haha",2:"xixi"}
+    valueList2 = []
     company = {"Ethical":["Tesla (TSLA)","Sunrun (RUN)","General Electric (GE)"],"Growth":["Amazon (AMZN)","Veera System (VEEV)","Shopify (SHOP)"],"Quality":
-               ["Apple (APPL)","Amazon (AMZN)","Zoom (ZM)"],"Index":["iShares Core S&P 500 ETF (IVV)","Vanguard S&P 500 ETF(VOO)","SPDR S&P 500 ETF Trust(SPY)"],"Value":["Google (GOOG)","Netflix (NFLX)","NVIDIA(NVDA)"]}
-    portion = {"Ethical":[30,40,30],"Growth":[30,40,30],"Quality":
+               ["Apple (AAPL)","Amazon (AMZN)","Zoom (ZM)"],"Index":["iShares Core S&P 500 ETF (IVV)","Vanguard S&P 500 ETF(VOO)","SPDR S&P 500 ETF Trust(SPY)"],"Value":["Google (GOOG)","Netflix (NFLX)","NVIDIA(NVDA)"]}
+    symbolList = {"Ethical":["TSLA","RUN","GE"],"Growth":["AMZN","VEEV","SHOP"],"Quality":
+                 ["AAPL","AMZN","ZM"],"Index":["IVV","VOO","SPY"],
+                 "Value":["GOOG","NFLX","NVDA"]}
+
+    portion = {"Ethical":[30,40,30],"Growth":[20,45,35],"Quality":
                [30,40,30],"Index":[60,30,10],"Value":[60,30,10]}
     input_amount = 0
     invs_method = ''
+    invs_method_opt = ''
     result = ""
     form = invsForm()
+    
     if form.validate_on_submit():
         input_amount = form.input_amount.data
         invs_method = form.invs_method.data
         invs_method_opt = form.invs_method_opt.data
         
-
+        if (checkSecondmethod(invs_method_opt)):
+            print("input_amount is" , invs_method_opt)
+            input_amount = input_amount/2
+            valueList2, companyList2,portionList2 = getValueList(invs_method_opt,input_amount,portion,company,symbolList)
+            
+            
         if (invs_method == "Ethical Investing"):
             companyList = company["Ethical"]
             portionList= portion["Ethical"]
             tsla = getJsonResult("TSLA")
             run = getJsonResult("RUN")
             ge = getJsonResult("GE")
-            valueList = profileValue(input_amount, tsla, run, ge, portionList)
+            valueList = profileValue(input_amount, tsla, run, ge, portionList)    
         elif (invs_method == 'Growth Investing'):
             companyList = company["Growth"]
             portionList= portion["Growth"]
@@ -140,13 +172,15 @@ def invs():
             valueList = profileValue(input_amount, goog, nflx, nvda, portionList)
         else:
             result = "Plese enter a valid strategy method"
-
+            method1 = ""
+            method2 = ""
+            
         days = [1,2,3,4,5]
-        plt.plot(days, valueList)
-        plt.xlabel('days')
-        plt.ylabel('Prices')
-        plt.title('Price vs. Days')
-        plt.savefig('static/graph.png')
+        #plt.plot(days, valueList)
+        #plt.xlabel('days')
+        #plt.ylabel('Prices')
+        #plt.title('Price vs. Days')
+        #plt.savefig('static/graph.png')
 
 
         #calculations and algorithm down here.............
@@ -154,8 +188,9 @@ def invs():
 
     else:
         flash('calculator failed')
-    return render_template('invs.html', title='Invs', form=form, result=result,
-                           resultDict = resultDict,companyList=companyList,portionList=portionList,valueList = valueList)
+    return render_template('invs.html', title='Invs', form=form, method1 = invs_method, method2 = invs_method_opt, result=result,
+                           companyList=companyList,portionList=portionList,companyList2=companyList2,portionList2=portionList2,
+                           valueList = valueList,valueList2 = valueList2)
 
 def getJsonResult(symbol):
     SITE_ROOT = os.path.realpath(os.path.dirname(__file__))

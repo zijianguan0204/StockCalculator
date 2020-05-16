@@ -47,21 +47,47 @@
             <div class="form-group">
                 {{ form.submit(class="btn btn-outline-info") }}
             </div>
-            <p>Your final Protfolio based on your selected strategy is as below  {{ result }}</p >
+            <P>{{ result }}</P>
+            <p>Your final Protfolio based on your selected strategy is as below:</p >
+            <P>{{method1}}</P>
             <ol>
               <li>{{ companyList[0] }} =  {{portionList[0]}} %</li>
               <li>{{ companyList[1] }} =  {{portionList[1]}} %</li>
               <li>{{ companyList[2] }} =  {{portionList[2]}} %</li>
             </ol>
+
+            <P>{{method2}}</P>
+            <ol>
+              <li>{{ companyList2[0] }} =  {{portionList2[0]}} %</li>
+              <li>{{ companyList2[1] }} =  {{portionList2[1]}} %</li>
+              <li>{{ companyList2[2] }} =  {{portionList2[2]}} %</li>
+            </ol>
+
             <p>A weekly trend of the portfolio value is as below </p >
-            <ul>
+
+            <span>
+            <ul style="list-style-type: none; display: inline-block;">
               <li>{{valueList[0]}}</li>
               <li>{{valueList[1]}}</li>
               <li>{{valueList[2]}}</li>
               <li>{{valueList[3]}}</li>
               <li>{{valueList[4]}}</li>
-              <img src="{{url_for('static', filename='graph.png')}}" />
             </ul>
+
+             <ul style="list-style-type: none; display: inline-block;">
+              <li>{{valueList2[0]}}</li>
+              <li>{{valueList2[1]}}</li>
+              <li>{{valueList2[2]}}</li>
+              <li>{{valueList2[3]}}</li>
+              <li>{{valueList2[4]}}</li>
+            </ul>
+
+            </span>
+
+              <p>
+              <img src="{{url_for('static', filename='graph.png')}}" />
+          </p>
+            
         </form>
     </div>
 {% endblock content %}
