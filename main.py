@@ -89,6 +89,7 @@ def checkSecondmethod(method):
     else:
         return False
 
+    
 
 def getValueList(invs_method,input_amount,portion,company,symbolList):
     m = invs_method.split()[0]
