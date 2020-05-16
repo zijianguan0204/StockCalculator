@@ -8,6 +8,7 @@ from datetime import date, timedelta
 import os
 import json
 import matplotlib.pyplot as plt
+import numpy as np
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
@@ -116,8 +117,9 @@ def invs():
                  ["AAPL","AMZN","ZM"],"Index":["IVV","VOO","SPY"],
                  "Value":["GOOG","NFLX","NVDA"]}
 
-    portion = {"Ethical":[30,40,30],"Growth":[20,45,35],"Quality":
+    portion = {"Ethical":np.random.multinomial(100, np.ones(3)/3, size=1)[0],"Growth":np.random.multinomial(100, np.ones(3)/3, size=1)[0],"Quality":
                [30,40,30],"Index":[60,30,10],"Value":[60,30,10]}
+    profit=0
     input_amount = 0
     invs_method = ''
     invs_method_opt = ''
@@ -130,10 +132,8 @@ def invs():
         invs_method_opt = form.invs_method_opt.data
         
         if (checkSecondmethod(invs_method_opt)):
-            print("input_amount is" , invs_method_opt)
             input_amount = input_amount/2
-            valueList2, companyList2,portionList2 = getValueList(invs_method_opt,input_amount,portion,company,symbolList)
-            
+            valueList2, companyList2,portionList2 = getValueList(invs_method_opt,input_amount,portion,company,symbolList)            
             
         if (invs_method == "Ethical Investing"):
             companyList = company["Ethical"]
@@ -174,7 +174,8 @@ def invs():
             result = "Plese enter a valid strategy method"
             method1 = ""
             method2 = ""
-            
+                     
+        profit = getProfit(input_amount, valueList, valueList2)
         days = [1,2,3,4,5]
         #plt.plot(days, valueList)
         #plt.xlabel('days')
@@ -190,7 +191,7 @@ def invs():
         flash('calculator failed')
     return render_template('invs.html', title='Invs', form=form, method1 = invs_method, method2 = invs_method_opt, result=result,
                            companyList=companyList,portionList=portionList,companyList2=companyList2,portionList2=portionList2,
-                           valueList = valueList,valueList2 = valueList2)
+                           valueList = valueList,valueList2 = valueList2, profit = profit)
 
 def getJsonResult(symbol):
     SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
@@ -238,6 +239,14 @@ def profileValue(money, list1, list2, list3, portionList):
         value = portion1 * float(list1[i]) / float(list1[0]) + portion2 * float(list2[i]) / float(list2[0])+ portion3 * float(list3[i]) / float(list3[0])
         result.append(round(value,2))
     return result
+
+def getProfit(input_amount, valueList1, valueList2):
+    profit = 0
+    if(len(valueList1) > 1):
+        profit = valueList1[4] - input_amount 
+    if(len(valueList2) > 1):
+        profit += valueList2[4] - input_amount 
+    return round(profit, 2)
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=8080, debug=True)

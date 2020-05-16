@@ -47,8 +47,12 @@
             <div class="form-group">
                 {{ form.submit(class="btn btn-outline-info") }}
             </div>
+
             <P>{{ result }}</P>
+
+            {% if method1 == "Ethical Investing" or method1 == 'Growth Investing' or  method1 == "Index Investing" or method1 == "Value Investing" %}
             <p>Your final Protfolio based on your selected strategy is as below:</p >
+
             <P>{{method1}}</P>
             <ol>
               <li>{{ companyList[0] }} =  {{portionList[0]}} %</li>
@@ -56,12 +60,14 @@
               <li>{{ companyList[2] }} =  {{portionList[2]}} %</li>
             </ol>
 
+            {% if method2 == "Ethical Investing" or method2 == 'Growth Investing' or  method2 == "Index Investing" or method2 == "Value Investing" %}
             <P>{{method2}}</P>
             <ol>
               <li>{{ companyList2[0] }} =  {{portionList2[0]}} %</li>
               <li>{{ companyList2[1] }} =  {{portionList2[1]}} %</li>
               <li>{{ companyList2[2] }} =  {{portionList2[2]}} %</li>
             </ol>
+            {% endif %}
 
             <p>A weekly trend of the portfolio value is as below </p >
 
@@ -81,13 +87,43 @@
               <li>{{valueList2[3]}}</li>
               <li>{{valueList2[4]}}</li>
             </ul>
-
             </span>
+            {% if profit >= 0 %}
+            <p> Congratulation. You Earn Money through using our Strategy!!!! </p >
+            {% else %}
+            <p> Oh, the overall stock market is bad. You can try our other strategy. </p >
+            {% endif %}
+            <p>  You profit is: {{profit}}</p >
+
+            {% if method1 == "Ethical Investing" %}
+            <p> Your first investing strategy is like Jesse Livermore! </p >
+            {% elif method1 == "Growth Investing" %}
+            <p> Your first investing strategy is like William Delbert Gann! </p>
+            {% elif method1 == "Value Investing" %}
+            <p> Your first investing strategy is like Steven Cohen! </p>
+            {% elif method1 == "Index Investing" %}
+            <p> Your first investing strategy is like Paul Tudor Jones! </p>
+            {% elif method1 == "Quality Investing" %}
+            <p> Your first investing strategy is like warren buffett! </p>
+            {% endif %}
+
+            {% if method2 == "Ethical Investing" %}
+            <p> Your second investing strategy is like Jesse Livermore! </p >
+            {% elif method2 == "Growth Investing" %}
+            <p> Your second investing strategy is like William Delbert Gann! </p>
+            {% elif method2 == "Value Investing" %}
+            <p> Your second investing strategy is like Steven Cohen! </p>
+            {% elif method2 == "Index Investing" %}
+            <p> Your second investing strategy is like Paul Tudor Jones! </p>
+            {% elif method2 == "Quality Investing" %}
+            <p> Your second investing strategy is like warren buffett! </p>
+            {% endif %}
 
               <p>
               <img src="{{url_for('static', filename='graph.png')}}" />
           </p>
-            
+          {% endif %}
+
         </form>
     </div>
 {% endblock content %}
