@@ -146,7 +146,7 @@ def invs():
         plt.xlabel('days')
         plt.ylabel('Prices')
         plt.title('Price vs. Days')
-        plt.savefig('templates/graph.png')
+        plt.savefig('static/graph.png')
 
 
         #calculations and algorithm down here.............
