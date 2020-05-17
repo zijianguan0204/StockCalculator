@@ -9,9 +9,11 @@ import os
 import json
 import matplotlib.pyplot as plt
 import numpy as np
+import time
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
 
 @app.route("/", methods=['GET', 'POST'])
@@ -175,14 +177,18 @@ def invs():
             result = "Plese enter a valid strategy method"
             method1 = ""
             method2 = ""
-                     
+        ts = int(time.time())
+        imgName =  str(ts) + ".png"
+        filePath = "static/" + imgName
         profit = getProfit(input_amount, valueList, valueList2)
         days = [1,2,3,4,5]
-        #plt.plot(days, valueList)
-        #plt.xlabel('days')
-        #plt.ylabel('Prices')
-        #plt.title('Price vs. Days')
-        #plt.savefig('static/graph.png')
+        plt.plot(days, valueList)
+        plt.xlabel('days')
+        plt.ylabel('Prices')
+        plt.title('Price vs. Days')
+        # plt.savefig("static/graph.png")
+        plt.savefig(filePath)
+        plt.clf()
 
 
         #calculations and algorithm down here.............
@@ -192,7 +198,7 @@ def invs():
         flash('calculator failed')
     return render_template('invs.html', title='Invs', form=form, method1 = invs_method, method2 = invs_method_opt, result=result,
                            companyList=companyList,portionList=portionList,companyList2=companyList2,portionList2=portionList2,
-                           valueList = valueList,valueList2 = valueList2, profit = profit)
+                           valueList = valueList,valueList2 = valueList2, profit = profit, imgName = imgName)
 
 def getJsonResult(symbol):
     SITE_ROOT = os.path.realpath(os.path.dirname(__file__))

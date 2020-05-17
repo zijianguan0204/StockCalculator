@@ -119,8 +119,11 @@
             <p> Your second investing strategy is like warren buffett! </p>
             {% endif %}
 
-              <p>
-              <img src="{{url_for('static', filename='graph.png')}}" />
+          <p>
+            <meta Http-Equiv="Cache" content="no-cache">
+              <!-- <img src="{{url_for('static', filename='graph.png')}}" /> -->
+              <img src="{{url_for('static', filename= imgName)}}" />
+            <meta/>
           </p>
           {% endif %}
 
