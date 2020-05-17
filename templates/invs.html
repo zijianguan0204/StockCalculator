@@ -121,8 +121,10 @@
 
           <p>
             <meta Http-Equiv="Cache" content="no-cache">
-              <!-- <img src="{{url_for('static', filename='graph.png')}}" /> -->
-              <img src="{{url_for('static', filename= imgName)}}" />
+              <img src="{{url_for('static', filename= imgNameA)}}" />
+              {% if imgNameB != "" %}
+                <img src="{{url_for('static', filename= imgNameB)}}" />
+              {% endif %}
             <meta/>
           </p>
           {% endif %}

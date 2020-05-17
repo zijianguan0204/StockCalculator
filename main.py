@@ -127,6 +127,8 @@ def invs():
     invs_method = ''
     invs_method_opt = ''
     result = ""
+    imgNameA = ""
+    imgNameB = ""   
     form = invsForm()
     
     if form.validate_on_submit():
@@ -178,18 +180,27 @@ def invs():
             method1 = ""
             method2 = ""
         ts = int(time.time())
-        imgName =  str(ts) + ".png"
-        filePath = "static/" + imgName
+
+        imgNameA =  "imgA" + str(ts) + ".png"
+        filePath = "static/" + imgNameA
         profit = getProfit(input_amount, valueList, valueList2)
         days = [1,2,3,4,5]
         plt.plot(days, valueList)
         plt.xlabel('days')
         plt.ylabel('Prices')
-        plt.title('Price vs. Days')
-        # plt.savefig("static/graph.png")
+        plt.title('Price vs. Days on First Method')
         plt.savefig(filePath)
         plt.clf()
 
+        if len(valueList2) != 0:
+            imgNameB =  "imgB" + str(ts) + ".png"
+            filePath = "static/" + imgNameB
+            plt.plot(days, valueList2)
+            plt.xlabel('days')
+            plt.ylabel('Prices')
+            plt.title('Price vs. Days on Second Method')
+            plt.savefig(filePath)
+            plt.clf()
 
         #calculations and algorithm down here.............
         #result = "Here is the result..."
@@ -198,7 +209,7 @@ def invs():
         flash('calculator failed')
     return render_template('invs.html', title='Invs', form=form, method1 = invs_method, method2 = invs_method_opt, result=result,
                            companyList=companyList,portionList=portionList,companyList2=companyList2,portionList2=portionList2,
-                           valueList = valueList,valueList2 = valueList2, profit = profit, imgName = imgName)
+                           valueList = valueList,valueList2 = valueList2, profit = profit, imgNameA = imgNameA, imgNameB = imgNameB)
 
 def getJsonResult(symbol):
     SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
