@@ -96,27 +96,57 @@
             <p>  You profit is: {{profit}}</p >
 
             {% if method1 == "Ethical Investing" %}
-            <p> Your first investing strategy is like Jesse Livermore! </p >
+            <p> 
+                Your first investing strategy is like Jesse Livermore! 
+                 <img src="{{url_for('static', filename= 'Jesse_Livermore.jpg')}}" style="width:200px;height:200px;"/>
+            </p >
             {% elif method1 == "Growth Investing" %}
-            <p> Your first investing strategy is like William Delbert Gann! </p>
+            <p> 
+                Your first investing strategy is like William Delbert Gann!
+                <img src="{{url_for('static', filename= 'William_Delbert_Gann.jpg')}}" style="width:200px;height:200px;"/>
+            </p>
             {% elif method1 == "Value Investing" %}
-            <p> Your first investing strategy is like Steven Cohen! </p>
+            <p> 
+                Your first investing strategy is like Steven Cohen!
+                <img src="{{url_for('static', filename= 'Steven_Cohen.jpg')}}" style="width:200px;height:200px;"/>
+            </p>
             {% elif method1 == "Index Investing" %}
-            <p> Your first investing strategy is like Paul Tudor Jones! </p>
+            <p> 
+                Your first investing strategy is like Paul Tudor Jones! 
+                <img src="{{url_for('static', filename= 'Paul_Tudor_Jones.jpg')}}" style="width:200px;height:200px;"/>
+            </p>
             {% elif method1 == "Quality Investing" %}
-            <p> Your first investing strategy is like warren buffett! </p>
+            <p> 
+                Your first investing strategy is like Warren buffett!
+                <img src="{{url_for('static', filename= 'Warren_buffett.jpg')}}" style="width:200px;height:200px;"/>
+            </p>
             {% endif %}
 
             {% if method2 == "Ethical Investing" %}
-            <p> Your second investing strategy is like Jesse Livermore! </p >
+            <p> 
+                Your second investing strategy is like Jesse Livermore! 
+                <img src="{{url_for('static', filename= 'Jesse_Livermore.jpg')}}" style="width:200px;height:200px;"/>
+            </p >
             {% elif method2 == "Growth Investing" %}
-            <p> Your second investing strategy is like William Delbert Gann! </p>
+            <p> 
+                Your second investing strategy is like William Delbert Gann! 
+                <img src="{{url_for('static', filename= 'William_Delbert_Gann.jpg')}}" style="width:200px;height:200px;"/>
+            </p>
             {% elif method2 == "Value Investing" %}
-            <p> Your second investing strategy is like Steven Cohen! </p>
+            <p> 
+                Your second investing strategy is like Steven Cohen!
+                <img src="{{url_for('static', filename= 'Steven_Cohen.jpg')}}" style="width:200px;height:200px;"/>
+            </p>
             {% elif method2 == "Index Investing" %}
-            <p> Your second investing strategy is like Paul Tudor Jones! </p>
+            <p> 
+                Your second investing strategy is like Paul Tudor Jones!
+                <img src="{{url_for('static', filename= 'Paul_Tudor_Jones.jpg')}}" style="width:200px;height:200px;"/>
+            </p>
             {% elif method2 == "Quality Investing" %}
-            <p> Your second investing strategy is like warren buffett! </p>
+            <p> 
+                Your second investing strategy is like warren buffett! 
+                <img src="{{url_for('static', filename= 'Warren_buffett.jpg')}}" style="width:200px;height:200px;"/>
+            </p>
             {% endif %}
 
           <p>
@@ -127,6 +157,7 @@
               {% endif %}
             <meta/>
           </p>
+
           {% endif %}
 
         </form>
