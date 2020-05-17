@@ -7,6 +7,7 @@ import requests
 from datetime import date, timedelta
 import os
 import json
+import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 import time
@@ -86,7 +87,7 @@ def realTimeInfo():
 
 
 def checkSecondmethod(method):
-    if (method == "Ethical Investing" or method == 'Growth Investing' or  method == "Index Investing" or method == "Value Investing"):
+    if (method == "Ethical Investing" or method == 'Growth Investing' or  method == "Index Investing" or method == "Value Investing" or method == "Quality Investing"):
         return True
     else:
         return False
@@ -135,25 +136,29 @@ def invs():
         input_amount = form.input_amount.data
         invs_method = form.invs_method.data
         invs_method_opt = form.invs_method_opt.data
+        ts = int(time.time())
+        imgNameA =  "imgA" + str(ts) + ".png"
         
         if (checkSecondmethod(invs_method_opt)):
             input_amount = input_amount/2
             valueList2, companyList2,portionList2 = getValueList(invs_method_opt,input_amount,portion,company,symbolList)            
-            
+
         if (invs_method == "Ethical Investing"):
             companyList = company["Ethical"]
             portionList= portion["Ethical"]
             tsla = getJsonResult("TSLA")
             run = getJsonResult("RUN")
             ge = getJsonResult("GE")
-            valueList = profileValue(input_amount, tsla, run, ge, portionList)    
+            valueList = profileValue(input_amount, tsla, run, ge, portionList)
+            creatImage(ts,imgNameA,input_amount, valueList, valueList2)
         elif (invs_method == 'Growth Investing'):
             companyList = company["Growth"]
             portionList= portion["Growth"]
             amzn = getJsonResult("AMZN")
             veev = getJsonResult("VEEV")
             shop = getJsonResult("SHOP")
-            valueList = profileValue(input_amount, amzn, veev, shop, portionList) 
+            valueList = profileValue(input_amount, amzn, veev, shop, portionList)
+            creatImage(ts,imgNameA,input_amount, valueList, valueList2)
         elif (invs_method == "Index Investing"):
             companyList = company["Index"]
             portionList= portion["Index"]
@@ -161,6 +166,7 @@ def invs():
             veev = getJsonResult("VEEV")
             shop = getJsonResult("SHOP")
             valueList = profileValue(input_amount, amzn, veev, shop, portionList)
+            creatImage(ts,imgNameA,input_amount, valueList, valueList2)
         elif (invs_method == "Quality Investing"):
             companyList = company["Quality"]
             portionList= portion["Quality"]
@@ -168,6 +174,7 @@ def invs():
             amzn = getJsonResult("AMZN")
             zm = getJsonResult("ZM")
             valueList = profileValue(input_amount, appl, amzn, zm, portionList)
+            creatImage(ts,imgNameA,input_amount, valueList, valueList2)
         elif (invs_method == "Value Investing"):
             companyList = company["Value"]
             portionList= portion["Value"]
@@ -175,32 +182,15 @@ def invs():
             nflx = getJsonResult("NFLX")
             nvda = getJsonResult("NVDA")
             valueList = profileValue(input_amount, goog, nflx, nvda, portionList)
+            creatImage(ts,imgNameA,input_amount, valueList, valueList2)
         else:
             result = "Plese enter a valid strategy method"
             method1 = ""
             method2 = ""
-        ts = int(time.time())
-
-        imgNameA =  "imgA" + str(ts) + ".png"
-        filePath = "static/" + imgNameA
-        profit = getProfit(input_amount, valueList, valueList2)
-        days = [1,2,3,4,5]
-        plt.plot(days, valueList)
-        plt.xlabel('days')
-        plt.ylabel('Prices')
-        plt.title('Price vs. Days on First Method')
-        plt.savefig(filePath)
-        plt.clf()
-
+   
         if len(valueList2) != 0:
             imgNameB =  "imgB" + str(ts) + ".png"
-            filePath = "static/" + imgNameB
-            plt.plot(days, valueList2)
-            plt.xlabel('days')
-            plt.ylabel('Prices')
-            plt.title('Price vs. Days on Second Method')
-            plt.savefig(filePath)
-            plt.clf()
+            creatImage(ts,imgNameB,input_amount, valueList, valueList2)
 
         #calculations and algorithm down here.............
         #result = "Here is the result..."
@@ -210,6 +200,20 @@ def invs():
     return render_template('invs.html', title='Invs', form=form, method1 = invs_method, method2 = invs_method_opt, result=result,
                            companyList=companyList,portionList=portionList,companyList2=companyList2,portionList2=portionList2,
                            valueList = valueList,valueList2 = valueList2, profit = profit, imgNameA = imgNameA, imgNameB = imgNameB)
+
+def creatImage(ts,img,input_amount, valueList, valueList2):
+    SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+    imageUrl = os.path.join(SITE_ROOT, 'static/',img)
+    profit = getProfit(input_amount, valueList, valueList2)
+    days = [1,2,3,4,5]
+    matplotlib.use('Agg')
+    plt.plot(days, valueList)
+    plt.xlabel('days')
+    plt.ylabel('Prices')
+    plt.title('Price vs. Days on First Method')
+    plt.savefig(imageUrl)
+    plt.clf()
+
 
 def getJsonResult(symbol):
     SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
